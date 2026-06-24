@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FRAUD HUNTER — Console · HIDEN Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#04090c;--panel:#0a151b;--panel2:#0d1b22;--line:#13303a;--line2:#1c4450;
+  --cyan:#00e5ff;--cyan-dim:#0a7d8c;--ink:#cfe9ef;--ink-dim:#6f9aa6;--ink-faint:#3f6571;
+  --green:#2be5a0;--amber:#ffb020;--orange:#ff7a1a;--red:#ff3b5c;--mag:#e5468f;
+  --mono:'Share Tech Mono',monospace;--disp:'Orbitron',var(--mono);--body:'Inter',system-ui,sans-serif;
+  --glow:0 0 18px rgba(0,229,255,.25);
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1100px 700px at 80% -8%,rgba(0,229,255,.07),transparent 60%),var(--void);
+  color:var(--ink);font-family:var(--body);font-size:14px}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;
+  background:repeating-linear-gradient(0deg,transparent 0 2px,rgba(0,0,0,.16) 2px 3px);mix-blend-mode:overlay;opacity:.5}
+header{display:flex;align-items:center;gap:14px;padding:13px 22px;border-bottom:1px solid var(--line2);
+  background:linear-gradient(180deg,rgba(10,21,27,.96),rgba(7,15,20,.92));position:sticky;top:0;z-index:20}
+.scope{width:24px;height:24px;position:relative}
+.scope::before,.scope::after{content:"";position:absolute;background:var(--cyan)}
+.scope::before{left:50%;top:1px;bottom:1px;width:1.5px;transform:translateX(-50%);box-shadow:var(--glow)}
+.scope::after{top:50%;left:1px;right:1px;height:1.5px;transform:translateY(-50%);box-shadow:var(--glow)}
+.scope b{position:absolute;inset:3px;border:1.5px solid var(--cyan);border-radius:50%;box-shadow:var(--glow)}
+.scope i{position:absolute;left:50%;top:50%;width:4px;height:4px;border-radius:50%;background:var(--red);transform:translate(-50%,-50%);box-shadow:0 0 8px var(--red)}
+.brand .t{font-family:var(--disp);font-weight:900;font-size:16px;letter-spacing:3px}
+.brand .t em{color:var(--cyan);font-style:normal;text-shadow:var(--glow)}
+.brand .s{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--ink-faint)}
+.sp{flex:1}
+.chip{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:var(--ink-dim);border:1px solid var(--line2);padding:5px 10px;display:flex;align-items:center;gap:7px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:p 1.6s infinite}
+@keyframes p{50%{opacity:.35}}
+main{max-width:1240px;margin:0 auto;padding:22px}
+.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:3px;color:var(--cyan-dim);text-transform:uppercase}
+h1{font-family:var(--disp);font-weight:700;font-size:20px;letter-spacing:2px;margin:3px 0 18px}
+.grid{display:grid;gap:16px}
+.g4{grid-template-columns:repeat(4,1fr)}.g2{grid-template-columns:1.1fr .9fr}
+@media(max-width:900px){.g4{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}}
+.panel{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line2);position:relative;padding:16px}
+.panel::before,.panel::after{content:"";position:absolute;width:10px;height:10px;border:1.5px solid var(--cyan);opacity:.6}
+.panel::before{top:-1px;left:-1px;border-right:0;border-bottom:0}.panel::after{bottom:-1px;right:-1px;border-left:0;border-top:0}
+.ph{display:flex;align-items:center;gap:8px;margin-bottom:13px}
+.ph h3{font-family:var(--disp);font-weight:500;font-size:12px;letter-spacing:2px;margin:0;color:var(--cyan);text-transform:uppercase}
+.ph .tag{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--ink-faint)}
+.kpi .l{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:var(--ink-faint);text-transform:uppercase}
+.kpi .v{font-family:var(--disp);font-weight:700;font-size:26px;margin:7px 0 2px}
+.kpi .v.c{color:var(--cyan)}.kpi .v.g{color:var(--green)}.kpi .v.a{color:var(--amber)}.kpi .v.r{color:var(--red)}
+.kpi .d{font-family:var(--mono);font-size:11px;color:var(--ink-dim)}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:var(--ink-faint);text-transform:uppercase;text-align:left;padding:8px 9px;border-bottom:1px solid var(--line2)}
+td{padding:9px;border-bottom:1px solid var(--line);color:var(--ink-dim)}
+tr:hover td{background:rgba(0,229,255,.03);color:var(--ink)}
+.mono{font-family:var(--mono)}
+.pill{font-family:var(--mono);font-size:10px;letter-spacing:1px;padding:2px 8px;border-radius:3px;border:1px solid;text-transform:uppercase;white-space:nowrap;display:inline-block}
+.p-low{color:var(--green);border-color:var(--green)}.p-med{color:var(--amber);border-color:var(--amber)}
+.p-high{color:var(--orange);border-color:var(--orange)}.p-crit{color:var(--red);border-color:var(--red)}
+.p-info{color:var(--cyan);border-color:var(--cyan-dim)}.p-ghost{color:var(--ink-faint);border-color:var(--line2)}
+.bar{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:12px}
+.bar .lab{flex:0 0 150px;color:var(--ink-dim);font-size:11.5px}
+.bar .trk{flex:1;height:8px;background:var(--line);border-radius:5px;overflow:hidden}
+.bar .trk i{display:block;height:100%;border-radius:5px;transition:width .7s}
+.bar .v{font-family:var(--mono);font-size:11px;color:var(--ink-dim);flex:0 0 34px;text-align:right}
+.tg{width:34px;height:18px;border-radius:10px;background:var(--line2);position:relative;cursor:pointer;transition:.2s}
+.tg i{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--ink-faint);transition:.2s}
+.tg.on{background:rgba(43,229,160,.25)}.tg.on i{left:18px;background:var(--green);box-shadow:0 0 8px var(--green)}
+label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--ink-faint);text-transform:uppercase;margin:0 0 5px}
+input,select{width:100%;background:var(--void);border:1px solid var(--line2);color:var(--ink);font-family:var(--mono);font-size:13px;padding:8px 10px;border-radius:3px}
+input:focus,select:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,229,255,.12)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.chk{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;color:var(--ink-dim);text-transform:none;letter-spacing:0}
+.chk input{width:auto}
+.btn{font-family:var(--disp);font-weight:700;font-size:12px;letter-spacing:2px;background:var(--cyan);color:var(--void);border:0;padding:11px 18px;cursor:pointer;width:100%;text-transform:uppercase}
+.btn:hover{box-shadow:var(--glow)}
+.result{margin-top:14px;border:1px solid var(--line2);padding:14px;background:var(--void);display:none}
+.result.show{display:block;animation:f .3s}
+@keyframes f{from{opacity:0;transform:translateY(5px)}}
+.result .dec{font-family:var(--disp);font-weight:900;font-size:22px;letter-spacing:2px}
+.note{font-family:var(--mono);font-size:11px;color:var(--ink-faint);background:rgba(0,229,255,.03);border:1px solid var(--line);padding:9px 11px;margin-top:14px}
+.note b{color:var(--cyan)}
+.muted{color:var(--ink-faint)}
+::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-track{background:var(--void)}
+::-webkit-scrollbar-thumb{background:var(--line2);border-radius:5px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="scope"><b></b><i></i></div>
+  <div class="brand"><div class="t">FRAUD <em>HUNTER</em></div><div class="s">CONSOLE · HIDEN ENGINE · API VIVA</div></div>
+  <div class="sp"></div>
+  <div class="chip"><span class="dot"></span> <span id="health">a ligar…</span></div>
+  <div class="chip" id="covChip">COBERTURA —</div>
+</header>
+<main>
+  <div class="eyebrow">Operação · dados reais da base de dados</div>
+  <h1>Command Center</h1>
+  <div class="grid g4" id="kpis"></div>
+
+  <div class="grid g2" style="margin-top:16px">
+    <div class="panel">
+      <div class="ph"><h3>Avaliador de transações</h3><span class="tag">MOTOR AO VIVO</span></div>
+      <div class="row">
+        <div><label>Conta</label><input id="f_acc" value="AO-4471"></div>
+        <div><label>Beneficiário</label><input id="f_ben" value="AO-NEW-77"></div>
+      </div>
+      <div class="row">
+        <div><label>Montante (Kz)</label><input id="f_amt" type="number" value="4250000"></div>
+        <div><label>Canal</label><select id="f_ch">
+          <option>Transf. instantânea</option><option>Transf. interbancária</option>
+          <option>Pagamento online</option><option>Pagamento POS</option></select></div>
+      </div>
+      <div class="row">
+        <div><label>Dispositivo</label><input id="f_dev" value="dev-novo-99"></div>
+        <div><label>Geolocalização</label><select id="f_geo">
+          <option data-lat="-8.84" data-lng="13.23">Luanda</option>
+          <option data-lat="-12.58" data-lng="13.41">Benguela</option>
+          <option data-lat="38.72" data-lng="-9.14">Lisboa</option>
+          <option data-lat="-25.97" data-lng="32.58">Maputo</option>
+          <option data-lat="-26.20" data-lng="28.05">Joanesburgo</option></select></div>
+      </div>
+      <div class="row">
+        <div><label>Score biometria (0-100)</label><input id="f_bio" type="number" value="35"></div>
+        <div><label>Direção</label><select id="f_dir"><option value="out">Saída (out)</option><option value="in">Entrada (in)</option></select></div>
+      </div>
+      <div class="row">
+        <label class="chk"><input type="checkbox" id="f_sca"> SCA / 3DS válido</label>
+        <label class="chk"><input type="checkbox" id="f_chg"> IBAN/contacto alterado &lt;24h</label>
+      </div>
+      <button class="btn" onclick="evaluate()">Avaliar transação</button>
+      <div class="result" id="result"></div>
+    </div>
+
+    <div class="panel">
+      <div class="ph"><h3>Cobertura da Kill Chain</h3><span class="tag" id="covTag">—</span></div>
+      <div id="cov"></div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:16px">
+    <div class="ph"><h3>Motor de regras</h3><span class="tag">TOGGLE PERSISTE · ADMIN</span></div>
+    <table><thead><tr><th>ID</th><th>Regra</th><th>Fase</th><th>Tipo</th><th>Peso</th><th>Disparos</th><th>Estado</th></tr></thead>
+    <tbody id="rules"></tbody></table>
+  </div>
+
+  <div class="panel" style="margin-top:16px">
+    <div class="ph"><h3>Transações recentes</h3><span class="tag" id="txTag">DA BASE DE DADOS</span></div>
+    <table><thead><tr><th>ID</th><th>Conta</th><th>Beneficiário</th><th>Montante</th><th>Score</th><th>Decisão</th><th>Regras</th></tr></thead>
+    <tbody id="txs"></tbody></table>
+  </div>
+
+  <div class="note">Console de demonstração · usa a chave de desenvolvimento <b>fh_admin_dev_key</b>. Em produção, isto passa a sessão autenticada (RBAC admin/analyst/viewer). Arquitetura: <b>HIDEN</b> → <b>Fraud Hunter</b> → <b>SOC Xpert</b>.</div>
+</main>
+
+<script>
+const API='', KEY='fh_admin_dev_key';
+const H={'Content-Type':'application/json','X-API-Key':KEY};
+const KZ=n=>new Intl.NumberFormat('pt-PT').format(Math.round(n))+' Kz';
+const sevClass=s=>({crit:'p-crit',high:'p-high',med:'p-med'})[s]||'p-ghost';
+const scoreClass=s=>s>=80?'p-crit':s>=60?'p-high':s>=35?'p-med':'p-low';
+const decClass=d=>d==='BLOCK'?'p-crit':d==='REVIEW'?'p-high':d==='CHALLENGE_3DS'?'p-med':'p-low';
+const decColor=d=>d==='BLOCK'?'var(--red)':d==='REVIEW'?'var(--orange)':d==='CHALLENGE_3DS'?'var(--amber)':'var(--green)';
+const decPT={BLOCK:'BLOQUEADO',REVIEW:'REVISÃO',CHALLENGE_3DS:'DESAFIO 3DS',APPROVE:'APROVADO'};
+
+async function api(path,opts={}){const r=await fetch(API+path,{headers:H,...opts});if(!r.ok)throw new Error(await r.text());return r.json();}
+
+async function loadHealth(){try{const h=await api('/api/health');document.getElementById('health').textContent='MOTOR ATIVO';}catch(e){document.getElementById('health').textContent='OFFLINE';}}
+
+async function loadDash(){
+  const d=await api('/api/dashboard');
+  const cells=[
+    ['Casos ativos',d.cases_active,'',''],
+    ['Alertas (24h)',d.alerts_24h,'a',d.blocked_24h+' bloqueios'],
+    ['Perda evitada',KZ(d.prevented_amount).replace(' Kz',''),'g','Kz · 24h'],
+    ['Cobertura KC',d.coverage+'%','c',d.aml_open+' alertas AML']
+  ];
+  document.getElementById('kpis').innerHTML=cells.map(c=>
+    `<div class="panel kpi"><div class="l">${c[0]}</div><div class="v ${c[2]}">${c[1]}</div><div class="d">${c[3]}</div></div>`).join('');
+  document.getElementById('covChip').textContent='COBERTURA '+d.coverage+'%';
+}
+
+async function loadCov(){
+  const k=await api('/api/killchain');
+  document.getElementById('covTag').textContent='GLOBAL '+k.overall+'%';
+  document.getElementById('cov').innerHTML=k.stages.map(s=>{
+    const col=s.coverage>=80?'var(--green)':s.coverage>=65?'var(--cyan)':'var(--amber)';
+    return `<div class="bar"><div class="lab">${s.stage}. ${s.name}</div>
+      <div class="trk"><i style="width:${s.coverage}%;background:${col}"></i></div><div class="v">${s.coverage}%</div></div>`;
+  }).join('');
+}
+
+async function loadRules(){
+  const rs=await api('/api/rules');
+  document.getElementById('rules').innerHTML=rs.map(r=>
+    `<tr><td class="mono">${r.id}</td><td>${r.name}</td>
+     <td><span class="pill p-info">F${r.stage}</span></td><td class="mono">${r.type}</td>
+     <td class="mono">${r.weight}</td><td class="mono">${r.hits}</td>
+     <td><div class="tg ${r.enabled?'on':''}" onclick="toggleRule('${r.id}',this)"><i></i></div></td></tr>`).join('');
+}
+async function toggleRule(id,el){
+  try{const r=await api('/api/rules/'+id+'/toggle',{method:'PATCH'});
+    el.classList.toggle('on',r.enabled);loadCov();loadDash();}
+  catch(e){alert('Falha ao alterar regra: '+e.message);}
+}
+
+async function loadTx(){
+  const ts=await api('/api/transactions?limit=15');
+  document.getElementById('txs').innerHTML=ts.map(t=>
+    `<tr><td class="mono">${t.id}</td><td class="mono">${t.account_id}</td>
+     <td class="mono">${t.beneficiary||'—'}</td><td class="mono">${KZ(t.amount)}</td>
+     <td><span class="pill ${scoreClass(t.score)}">${t.score}</span></td>
+     <td><span class="pill ${decClass(t.decision)}">${decPT[t.decision]||t.decision}</span></td>
+     <td>${(t.fired||[]).map(f=>`<span class="pill p-ghost" style="margin:1px">${f}</span>`).join('')||'<span class="muted">—</span>'}</td></tr>`).join('');
+}
+
+async function evaluate(){
+  const geoSel=document.getElementById('f_geo').selectedOptions[0];
+  const body={
+    account_id:document.getElementById('f_acc').value.trim(),
+    beneficiary:document.getElementById('f_ben').value.trim()||null,
+    amount:parseFloat(document.getElementById('f_amt').value)||0,
+    channel:document.getElementById('f_ch').value,
+    direction:document.getElementById('f_dir').value,
+    device_id:document.getElementById('f_dev').value.trim()||null,
+    geo:geoSel.text,lat:parseFloat(geoSel.dataset.lat),lng:parseFloat(geoSel.dataset.lng),
+    behavior_score:parseInt(document.getElementById('f_bio').value),
+    sca_passed:document.getElementById('f_sca').checked,
+    detail_changed:document.getElementById('f_chg').checked
+  };
+  const box=document.getElementById('result');
+  try{
+    const res=await api('/api/transactions/evaluate',{method:'POST',body:JSON.stringify(body)});
+    box.classList.add('show');
+    box.innerHTML=`<div style="display:flex;align-items:center;gap:14px">
+        <div class="dec" style="color:${decColor(res.decision)}">${decPT[res.decision]}</div>
+        <span class="pill ${scoreClass(res.score)}">SCORE ${res.score}/100</span>
+        <span class="mono muted" style="margin-left:auto">${res.transaction_id}</span></div>
+      <div class="mono muted" style="margin:9px 0 10px">${res.reason}</div>
+      ${res.fired.length?res.fired.map(f=>`<span class="pill ${sevClass(f.weight>=40?'crit':f.weight>=24?'high':'med')}" style="margin:2px 4px 2px 0">${f.id} · ${f.name} (+${f.weight})</span>`).join(''):'<span class="muted">Nenhuma regra acionada.</span>'}`;
+    loadTx();loadDash();
+  }catch(e){box.classList.add('show');box.innerHTML='<span style="color:var(--red)">Erro: '+e.message+'</span>';}
+}
+
+async function boot(){await loadHealth();await Promise.all([loadDash(),loadCov(),loadRules(),loadTx()]);}
+boot();
+</script>
+</body>
+</html>
